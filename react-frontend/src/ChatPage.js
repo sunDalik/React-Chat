@@ -1,5 +1,6 @@
 import React from 'react';
 import {socket} from "./App";
+import Message from "./Message";
 
 const ChatPage = (props) => {
     const [messages, setMessages] = React.useState([]);
@@ -58,9 +59,23 @@ const ChatPage = (props) => {
         setCurrentMessage(e.target.value);
     };
 
+    const getCurrentDate = () => {
+        const padTime = (time) => {
+            const strTime = time.toString();
+            if (strTime.length === 1) return "0" + strTime;
+            else return strTime;
+        };
+
+        const currentDate = new Date();
+        const hours = padTime(currentDate.getHours());
+        const minutes = padTime(currentDate.getMinutes());
+        const seconds = padTime(currentDate.getSeconds());
+        return `${hours}:${minutes}:${seconds}`;
+    };
+
     const sendMessage = (e) => {
         e.preventDefault();
-        const msgObject = {text: currentMessage, date: new Date()};
+        const msgObject = {text: currentMessage, date: getCurrentDate()};
         socket.emit('new-messages', msgObject);
         updateMessages([msgObject]);
         setCurrentMessage("");
@@ -68,13 +83,19 @@ const ChatPage = (props) => {
 
     return (
         <div className="chatPage">
-            <div className="chat-messages-list">
-                {messages.map((m, i) => <div key={i} className="chat-message">{m.text}</div>)}
+            <div className="chat-main">
+                <div className="chat-messages-list">
+                    {messages.map((m, i) => {
+                        return <Message key={i} text={m.text} date={m.date}/>;
+                    })}
+                </div>
+                <form className="chat-send-box" onSubmit={sendMessage}>
+                    <input value={currentMessage} onChange={handleCurrentMessageChange} className="chat-input"/>
+                    <button type="Submit" className="send-button">
+                        <i className="fas fa-paper-plane"/>
+                    </button>
+                </form>
             </div>
-            <form className="flexbox" onSubmit={sendMessage}>
-                <input value={currentMessage} onChange={handleCurrentMessageChange} className="chat-input"/>
-                <input type="Submit" className="button" value="Submit" readOnly/>
-            </form>
         </div>
     );
 };
