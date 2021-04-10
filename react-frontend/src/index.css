@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    background-color: #222222;
+    color: white;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #888888;
+    padding: 10px;
+    color: #222222;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: #ababab;
+}
+
+.chat-messages-list {
+    height: calc(100% - 80px);
+}
+
+.chat-message {
+
+}
+
+.chat-input {
+    width: 60%;
+}
+
+.hidden {
+    display: none;
+}
