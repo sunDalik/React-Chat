@@ -97,7 +97,7 @@ const ChatPage = (props) => {
         <div className="chatPage">
             <div className="name-box">
                 <input ref={nameInput} className="name-input" onChange={changeUsername}/>
-                <i className="fas fa-user"/>
+                <i className="fas fa-user user-icon"/>
             </div>
             <div className="chat-main">
                 <div className="chat-messages-list" ref={chatMessagesList}>

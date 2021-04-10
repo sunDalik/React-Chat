@@ -36,6 +36,10 @@ body {
     background: none;
 }
 
+.user-icon {
+    color: #888888;
+}
+
 .send-button:hover {
     color: #ababab;
 }
@@ -57,6 +61,7 @@ body {
 }
 
 .chat-message-text {
+    margin-top: 2px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -69,10 +74,11 @@ body {
     font-size: var(--font-size);
     color: white;
     flex-grow: 1;
+    margin-right: 10px;
 }
 
 .chat-send-box {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     margin-top: 10px;
     display: flex;
     flex-direction: row;
