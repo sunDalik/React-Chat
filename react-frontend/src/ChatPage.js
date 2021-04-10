@@ -5,6 +5,7 @@ import Message from "./Message";
 const ChatPage = (props) => {
     const [messages, setMessages] = React.useState([]);
     const [currentMessage, setCurrentMessage] = React.useState("");
+    const chatMessagesList = React.createRef();
 
     const showError = (message) => {
         console.log(message);
@@ -55,6 +56,10 @@ const ChatPage = (props) => {
         }
     }, []);
 
+    React.useEffect(() => {
+        chatMessagesList.current.scrollTop = chatMessagesList.current.scrollHeight + 999;
+    }, [messages]);
+
     const handleCurrentMessageChange = (e) => {
         setCurrentMessage(e.target.value);
     };
@@ -84,7 +89,7 @@ const ChatPage = (props) => {
     return (
         <div className="chatPage">
             <div className="chat-main">
-                <div className="chat-messages-list">
+                <div className="chat-messages-list" ref={chatMessagesList}>
                     {messages.map((m, i) => {
                         return <Message key={i} text={m.text} date={m.date}/>;
                     })}
