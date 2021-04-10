@@ -1,3 +1,4 @@
+const utils = require('./utils.js');
 const express = require('express');
 const app = express();
 const port = 8000;
@@ -9,28 +10,39 @@ const io = require('socket.io')(server, {
     transports: ["websocket"]
 });
 
-const currentChats = [];
-
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-
-app.get('/chat/*', (req, res) => {
-    const chatUrl = req.path.slice(6);
-    res.send();
-});
-
-app.get('/newChat', (req, res) => {
-    try {
-        const chat = generateNewChat();
-        res.send(chat.url);
-    } catch (e) {
-        res.status(500).send(e);
-    }
-});
+const chats = [];
+const MAX_PARTICIPANTS = 2;
 
 io.on('connection', (socket) => {
     console.log('New client connected');
+    let socketChat = null;
+
+    socket.on('join-chat', (url, responseCallback) => {
+        if (socketChat) {
+            utils.removeObjectFromArray(socket, socketChat);
+        }
+        const newChat = chats.find(c => c.url === url);
+        if (!newChat) {
+            responseCallback(null);
+        }
+        if (newChat.sockets.length < MAX_PARTICIPANTS) {
+            socketChat = newChat;
+            socketChat.sockets.push(socket);
+            responseCallback(true);
+            socket.emit('new-messages', socketChat.messages);
+        } else {
+            responseCallback(false);
+        }
+    });
+
+    socket.on('new-chat', (responseCallback) => {
+        try {
+            const chat = generateNewChat();
+            responseCallback(chat.url);
+        } catch (e) {
+            responseCallback("");
+        }
+    });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
@@ -46,12 +58,12 @@ function generateNewChat() {
             url += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         }
 
-        if (currentChats.every(c => c.url !== url)) {
-            const newChat = {url: url, messages: []};
-            currentChats.push(newChat);
+        if (chats.every(c => c.url !== url)) {
+            const newChat = {url: url, messages: [], sockets: []};
+            chats.push(newChat);
 
             return newChat;
         }
     }
-    throw "No free chat rooms available. Please try again later.";
+    throw new Error();
 }
