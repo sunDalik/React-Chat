@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const http = require('http');
-const server = http.createServer(app);
 const port = 8000;
+const server = app.listen(port, () => {
+    console.log(`Node.js server listening at http://localhost:${port}`);
+});
+
 const io = require('socket.io')(server, {
-    cors: {
-        origin: "http://localhost:3000"
-    }
+    transports: ["websocket"]
 });
 
 const currentChats = [];
@@ -27,10 +27,6 @@ app.get('/newChat', (req, res) => {
     } catch (e) {
         res.status(500).send(e);
     }
-});
-
-app.listen(port, () => {
-    console.log(`Node.js server listening at http://localhost:${port}`);
 });
 
 io.on('connection', (socket) => {

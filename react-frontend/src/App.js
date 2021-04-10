@@ -1,32 +1,27 @@
 import React from 'react';
 import axios from "axios";
-import CreateChatButton from "./CreateChatButton";
 import ChatPage from "./ChatPage";
 import socketClient from "socket.io-client";
 
 const SERVER = "http://localhost:8000";
 
-const App = () => {
-    const socket = socketClient(SERVER);
-
-    const [isChatPage, setIsChatPage] = React.useState(false);
-
-    const loadChatPage = (url) => {
-        setIsChatPage(true);
-    };
+const App = (props) => {
+    const socket = socketClient(SERVER, {transports: ["websocket"]});
 
     React.useEffect(() => {
-        axios.get("/chat/test")
+        axios.get("/newChat")
             .then(res => {
                 console.log(res);
+                if (res.status === 200) {
+                    //TODO
+                    window.history.pushState("", "", res.data);
+                } else {
+                }
             });
     });
 
     return (
-        <div className="app">
-            {isChatPage ? null : <CreateChatButton loadChatPage={loadChatPage}/>}
-            {isChatPage ? <ChatPage/> : null}
-        </div>
+        <ChatPage/>
     );
 };
 

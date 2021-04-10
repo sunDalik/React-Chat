@@ -5,7 +5,7 @@ const ChatPage = () => {
     const [messages, setMessages] = React.useState([]);
 
     return (
-        <div>
+        <div className="chatPage">
             <div className="chat-messages-list">
                 {messages.map(m => <div key={m} className="chat-message">m</div>)}
             </div>
