@@ -4,3 +4,5 @@ function removeObjectFromArray(object, array) {
         array.splice(index, 1);
     }
 }
+
+module.exports = {removeObjectFromArray};

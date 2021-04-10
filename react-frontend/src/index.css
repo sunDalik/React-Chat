@@ -1,3 +1,7 @@
+:root {
+    --font-size: 16px;
+}
+
 body {
     margin: 0;
     background-color: #222222;
@@ -15,8 +19,8 @@ body {
     cursor: pointer;
     background-color: #888888;
     padding: 10px;
+    font-size: var(--font-size);
     color: #222222;
-    font-size: 24px;
     font-weight: bold;
 }
 
@@ -33,7 +37,17 @@ body {
 }
 
 .chat-input {
-    width: 60%;
+    height: 25px;
+    background-color: #444444;
+    font-size: var(--font-size);
+    color: white;
+}
+
+.flexbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .hidden {

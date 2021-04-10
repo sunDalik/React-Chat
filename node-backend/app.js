@@ -18,33 +18,56 @@ io.on('connection', (socket) => {
     let socketChat = null;
 
     socket.on('join-chat', (url, responseCallback) => {
+        console.log("trying to join a chat " + url);
         if (socketChat) {
-            utils.removeObjectFromArray(socket, socketChat);
+            utils.removeObjectFromArray(socket, socketChat.sockets);
         }
         const newChat = chats.find(c => c.url === url);
         if (!newChat) {
+            console.log("Chat " + url + " not found");
             responseCallback(null);
-        }
-        if (newChat.sockets.length < MAX_PARTICIPANTS) {
+        } else if (newChat.sockets.length < MAX_PARTICIPANTS) {
             socketChat = newChat;
+            console.log("connected to " + socketChat.url);
             socketChat.sockets.push(socket);
             responseCallback(true);
-            socket.emit('new-messages', socketChat.messages);
+            socket.emit('new-messages', newChat.messages);
         } else {
+            console.log("Chat " + newChat.url + " is full");
             responseCallback(false);
         }
     });
 
     socket.on('new-chat', (responseCallback) => {
         try {
-            const chat = generateNewChat();
-            responseCallback(chat.url);
+            const newChat = generateNewChat();
+            socketChat = newChat;
+            newChat.sockets.push(socket);
+            responseCallback(newChat.url);
         } catch (e) {
             responseCallback("");
         }
     });
 
+    socket.on('new-messages', (message) => {
+        console.log("Got new message");
+        if (socketChat) {
+            console.log("Pushed new message to " + socketChat.url);
+            socketChat.messages.push(message);
+            for (const s of socketChat.sockets) {
+                if (s !== socket) {
+                    console.log("Sent new message to another socket");
+                    s.emit('new-messages', [message]);
+                }
+            }
+        }
+    });
+
     socket.on('disconnect', () => {
+        if (socketChat) {
+            utils.removeObjectFromArray(socket, socketChat.sockets);
+        }
+        socketChat = null;
         console.log('user disconnected');
     });
 });
