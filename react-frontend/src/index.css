@@ -1,11 +1,12 @@
 :root {
     --font-size: 16px;
+    --text-color: #EEEEEE;
 }
 
 body {
     margin: 0;
     background-color: #222222;
-    color: #eeeeee;
+    color: var(--text-color);
     font-family: Verdana, sans-serif;
 }
 
@@ -46,15 +47,20 @@ body {
 
 .chat-message {
     padding: 6px 10px;
-    margin-bottom: 10px;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
 }
 
 .chat-message:hover {
     background-color: #444444;
+}
+
+.chat-message-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .chat-input {
@@ -93,8 +99,26 @@ body {
     background-color: #777777;
 }
 
-.date {
+.chat-message-name, .chat-message-date {
     opacity: 0.3;
+    font-size: 14px;
+}
+
+.name-box {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    margin-right: 10px;
+}
+
+.name-input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    font-size: var(--font-size);
+    text-align: end;
+    margin-right: 10px;
 }
 
 .hidden {

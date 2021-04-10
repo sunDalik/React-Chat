@@ -1,10 +1,12 @@
 import React from 'react';
 import {socket} from "./App";
 import Message from "./Message";
+import {readLocalStorageEntry, storage, writeLocalStorageEntry} from "./localStorageUtils";
 
 const ChatPage = (props) => {
     const [messages, setMessages] = React.useState([]);
     const [currentMessage, setCurrentMessage] = React.useState("");
+    const nameInput = React.createRef();
     const chatMessagesList = React.createRef();
 
     const showError = (message) => {
@@ -33,6 +35,7 @@ const ChatPage = (props) => {
     socket.off('new-messages', updateMessages).on('new-messages', updateMessages);
 
     React.useEffect(() => {
+        nameInput.current.value = readLocalStorageEntry(storage.username);
         if (window.location.pathname === "/") {
             createNewChat();
         } else {
@@ -80,18 +83,26 @@ const ChatPage = (props) => {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        const msgObject = {text: currentMessage, date: getCurrentDate()};
+        const msgObject = {text: currentMessage, date: getCurrentDate(), name: readLocalStorageEntry(storage.username)};
         socket.emit('new-messages', msgObject);
         updateMessages([msgObject]);
         setCurrentMessage("");
     };
 
+    const changeUsername = (e) => {
+        writeLocalStorageEntry(storage.username, e.target.value);
+    };
+
     return (
         <div className="chatPage">
+            <div className="name-box">
+                <input ref={nameInput} className="name-input" onChange={changeUsername}/>
+                <i className="fas fa-user"/>
+            </div>
             <div className="chat-main">
                 <div className="chat-messages-list" ref={chatMessagesList}>
                     {messages.map((m, i) => {
-                        return <Message key={i} text={m.text} date={m.date}/>;
+                        return <Message key={i} text={m.text} date={m.date} name={m.name}/>;
                     })}
                 </div>
                 <form className="chat-send-box" onSubmit={sendMessage}>

@@ -1,11 +1,11 @@
-export const storage = [
-    {key: "name", default: "Anonymous"}
-];
+export const storage = {
+    username: {key: "name", default: "Anonymous"}
+};
 const storageName = "React_chat";
 
 export function initLocalStorage() {
     const stored = window.localStorage[storageName] ? JSON.parse(window.localStorage[storageName]) : {};
-    for (const entry of storage) {
+    for (const entry of Object.values(storage)) {
         if (stored[entry.key] === undefined) {
             stored[entry.key] = entry.default;
         }
