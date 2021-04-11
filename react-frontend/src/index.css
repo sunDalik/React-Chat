@@ -1,11 +1,26 @@
 :root {
     --font-size: 16px;
-    --text-color: #EEEEEE;
+
+    --background-color: #222222;
+    --text-color: #eeeeee;
+    --button-color: #888888;
+    --button-hover-color: #ababab;
+    --text-input-background-color: #444444;
+    --message-hover-color: #444444;
+}
+
+:root.light-theme {
+    --text-color: #000000;
+    --background-color: #f0f0f0;
+    --button-color: #406be9;
+    --button-hover-color: #40abe9;
+    --text-input-background-color: #ffffff;
+    --message-hover-color: #dddddd;
 }
 
 body {
     margin: 0;
-    background-color: #222222;
+    background-color: var(--background-color);
     color: var(--text-color);
     font-family: Verdana, sans-serif;
 }
@@ -30,18 +45,18 @@ body {
 
 .send-button {
     cursor: pointer;
-    color: #888888;
+    color: var(--button-color);
     font-size: 28px;
     border: none;
     background: none;
 }
 
-.user-icon {
-    color: #888888;
+.send-button:hover {
+    color: var(--button-hover-color);
 }
 
-.send-button:hover {
-    color: #ababab;
+.user-icon {
+    color: var(--button-color);
 }
 
 .chat-messages-list {
@@ -57,7 +72,7 @@ body {
 }
 
 .chat-message:hover {
-    background-color: #444444;
+    background-color: var(--message-hover-color);
 }
 
 .chat-message-text {
@@ -71,9 +86,9 @@ body {
 
 .chat-input {
     height: 28px;
-    background-color: #444444;
+    background-color: var(--text-input-background-color);
     font-size: var(--font-size);
-    color: white;
+    color: var(--text-color);
     flex-grow: 1;
     margin-right: 10px;
 }
@@ -131,6 +146,20 @@ body {
     font-size: var(--font-size);
     text-align: end;
     margin-right: 10px;
+}
+
+.theme-switch {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    padding: 5px;
+    color: var(--button-color);
+    font-size: 20px;
+}
+
+.theme-switch:hover {
+    color: var(--button-hover-color);
 }
 
 .hidden {

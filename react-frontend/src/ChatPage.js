@@ -4,6 +4,7 @@ import {readLocalStorageEntry, storage} from "./localStorageUtils";
 import Username from "./Username";
 import MessageForm from "./MessageForm";
 import MessageList from "./MessageList";
+import ThemeSwitch from "./ThemeSwitch";
 
 const ChatPage = () => {
     const [messages, setMessages] = React.useState([]);
@@ -79,6 +80,7 @@ const ChatPage = () => {
 
     return (
         <div className="chatPage">
+            <ThemeSwitch/>
             <Username/>
             <div className="chat-main">
                 <MessageList messages={messages}/>

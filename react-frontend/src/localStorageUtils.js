@@ -1,5 +1,6 @@
 export const storage = {
-    username: {key: "name", default: "Anonymous"}
+    username: {key: "name", default: "Anonymous"},
+    isLightTheme: {key: "isLightTheme", default: false}
 };
 const storageName = "React_chat";
 
