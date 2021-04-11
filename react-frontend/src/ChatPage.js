@@ -79,7 +79,7 @@ const ChatPage = () => {
     };
 
     return (
-        <div className="chatPage">
+        <div className="chat-page">
             <ThemeSwitch/>
             <Username/>
             <div className="chat-main">

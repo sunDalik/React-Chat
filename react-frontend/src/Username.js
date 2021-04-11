@@ -19,8 +19,8 @@ const Username = () => {
 
     return (
         <div className="name-box" onClick={focusUsernameInput}>
-            <input ref={nameInput} className="name-input" onBlur={changeUsername} maxLength="20"/>
-            <i className="fas fa-user user-icon"/>
+            <input ref={nameInput} className="name-box__input" onBlur={changeUsername} maxLength="20"/>
+            <i className="fas fa-user name-box__icon"/>
         </div>
     );
 };

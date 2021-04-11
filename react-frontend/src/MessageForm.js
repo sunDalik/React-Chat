@@ -14,9 +14,9 @@ const MessageForm = ({onMessageSend}) => {
     };
 
     return (
-        <form className="chat-send-box" onSubmit={submitMessage}>
-            <input value={currentMessage} onChange={handleCurrentMessageChange} className="chat-input"/>
-            <button type="Submit" className="send-button">
+        <form className="chat-send-form" onSubmit={submitMessage}>
+            <input value={currentMessage} onChange={handleCurrentMessageChange} className="chat-send-form__input"/>
+            <button type="Submit" className="chat-send-form__button">
                 <i className="fas fa-paper-plane"/>
             </button>
         </form>
