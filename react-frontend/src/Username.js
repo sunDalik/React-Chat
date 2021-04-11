@@ -8,14 +8,18 @@ const Username = () => {
         nameInput.current.value = readLocalStorageEntry(storage.username);
     }, []);
 
+    const focusUsernameInput = () => {
+        nameInput.current.focus();
+    };
+
     const changeUsername = (e) => {
         writeLocalStorageEntry(storage.username, e.target.value);
         //TODO notification about new name
     };
 
     return (
-        <div className="name-box">
-            <input ref={nameInput} className="name-input" onBlur={changeUsername}/>
+        <div className="name-box" onClick={focusUsernameInput}>
+            <input ref={nameInput} className="name-input" onBlur={changeUsername} maxLength="20"/>
             <i className="fas fa-user user-icon"/>
         </div>
     );
