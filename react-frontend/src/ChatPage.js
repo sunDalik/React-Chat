@@ -1,13 +1,12 @@
 import React from 'react';
 import {socket} from "./App";
-import Message from "./Message";
-import {readLocalStorageEntry, storage, writeLocalStorageEntry} from "./localStorageUtils";
+import {readLocalStorageEntry, storage} from "./localStorageUtils";
+import Username from "./Username";
+import MessageForm from "./MessageForm";
+import MessageList from "./MessageList";
 
-const ChatPage = (props) => {
+const ChatPage = () => {
     const [messages, setMessages] = React.useState([]);
-    const [currentMessage, setCurrentMessage] = React.useState("");
-    const nameInput = React.createRef();
-    const chatMessagesList = React.createRef();
 
     const showError = (message) => {
         console.log(message);
@@ -35,7 +34,6 @@ const ChatPage = (props) => {
     socket.off('new-messages', updateMessages).on('new-messages', updateMessages);
 
     React.useEffect(() => {
-        nameInput.current.value = readLocalStorageEntry(storage.username);
         if (window.location.pathname === "/") {
             createNewChat();
         } else {
@@ -59,14 +57,6 @@ const ChatPage = (props) => {
         }
     }, []);
 
-    React.useEffect(() => {
-        chatMessagesList.current.scrollTop = chatMessagesList.current.scrollHeight + 999;
-    }, [messages]);
-
-    const handleCurrentMessageChange = (e) => {
-        setCurrentMessage(e.target.value);
-    };
-
     const getCurrentDate = () => {
         const padTime = (time) => {
             const strTime = time.toString();
@@ -81,36 +71,18 @@ const ChatPage = (props) => {
         return `${hours}:${minutes}:${seconds}`;
     };
 
-    const sendMessage = (e) => {
-        e.preventDefault();
-        const msgObject = {text: currentMessage, date: getCurrentDate(), name: readLocalStorageEntry(storage.username)};
+    const sendMessage = (message) => {
+        const msgObject = {text: message, date: getCurrentDate(), name: readLocalStorageEntry(storage.username)};
         socket.emit('new-messages', msgObject);
         updateMessages([msgObject]);
-        setCurrentMessage("");
-    };
-
-    const changeUsername = (e) => {
-        writeLocalStorageEntry(storage.username, e.target.value);
     };
 
     return (
         <div className="chatPage">
-            <div className="name-box">
-                <input ref={nameInput} className="name-input" onChange={changeUsername}/>
-                <i className="fas fa-user user-icon"/>
-            </div>
+            <Username/>
             <div className="chat-main">
-                <div className="chat-messages-list" ref={chatMessagesList}>
-                    {messages.map((m, i) => {
-                        return <Message key={i} text={m.text} date={m.date} name={m.name}/>;
-                    })}
-                </div>
-                <form className="chat-send-box" onSubmit={sendMessage}>
-                    <input value={currentMessage} onChange={handleCurrentMessageChange} className="chat-input"/>
-                    <button type="Submit" className="send-button">
-                        <i className="fas fa-paper-plane"/>
-                    </button>
-                </form>
+                <MessageList messages={messages}/>
+                <MessageForm onMessageSend={sendMessage}/>
             </div>
         </div>
     );
