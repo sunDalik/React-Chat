@@ -18,6 +18,10 @@
     --message-hover-color: #dddddd;
 }
 
+.chat-input, .send-button, .name-input, .user-icon, .chat-message-name, .chat-message-text, .theme-switch, body {
+    transition: color 0.2s, background-color 0.2s;
+}
+
 body {
     margin: 0;
     background-color: var(--background-color);
