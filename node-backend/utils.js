@@ -5,4 +5,12 @@ function removeObjectFromArray(object, array) {
     }
 }
 
-module.exports = {removeObjectFromArray};
+function getRandomString(len) {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let string = "";
+    for (let i = 0; i < len; i++) {
+        string += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+    }
+}
+
+module.exports = {removeObjectFromArray, getRandomString};

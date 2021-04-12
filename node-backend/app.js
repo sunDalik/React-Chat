@@ -1,9 +1,10 @@
+const DEBUG = true;
 const utils = require('./utils.js');
 const express = require('express');
 const app = express();
 const port = 8000;
 const server = app.listen(port, () => {
-    console.log(`Node.js server listening at http://localhost:${port}`);
+    console.log(`Node.js server is listening at port ${port}`);
 });
 
 const io = require('socket.io')(server, {
@@ -14,26 +15,26 @@ const chats = [];
 const MAX_PARTICIPANTS = 2;
 
 io.on('connection', (socket) => {
-    console.log('New client connected');
+    debug('New client connected');
     let socketChat = null;
 
     socket.on('join-chat', (url, responseCallback) => {
-        console.log("trying to join a chat " + url);
+        debug("User is trying to join a chat " + url);
         if (socketChat) {
             utils.removeObjectFromArray(socket, socketChat.sockets);
         }
         const newChat = chats.find(c => c.url === url);
         if (!newChat) {
-            console.log("Chat " + url + " not found");
+            debug("Chat " + url + " not found");
             responseCallback(null);
         } else if (newChat.sockets.length < MAX_PARTICIPANTS) {
             socketChat = newChat;
-            console.log("connected to " + socketChat.url);
+            debug("User got connected to " + socketChat.url);
             socketChat.sockets.push(socket);
             responseCallback(true);
             socket.emit('new-messages', newChat.messages);
         } else {
-            console.log("Chat " + newChat.url + " is full");
+            debug("Chat " + newChat.url + " is full");
             responseCallback(false);
         }
     });
@@ -50,13 +51,13 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new-messages', (message) => {
-        console.log("Got new message");
+        debug("Got new message");
         if (socketChat) {
-            console.log("Pushed new message to " + socketChat.url);
+            debug("Pushed new message to " + socketChat.url);
             socketChat.messages.push(message);
             for (const s of socketChat.sockets) {
                 if (s !== socket) {
-                    console.log("Sent new message to another socket");
+                    debug("Sent new message to another socket");
                     s.emit('new-messages', [message]);
                 }
             }
@@ -68,25 +69,25 @@ io.on('connection', (socket) => {
             utils.removeObjectFromArray(socket, socketChat.sockets);
         }
         socketChat = null;
-        console.log('user disconnected');
+        debug('User got disconnected');
     });
 });
 
 function generateNewChat() {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let attempt = 0;
     while (attempt++ < 9999) {
-        let url = "";
-        for (let i = 0; i < 4; i++) {
-            url += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        }
-
+        const url = utils.getRandomString(4);
         if (chats.every(c => c.url !== url)) {
             const newChat = {url: url, messages: [], sockets: []};
             chats.push(newChat);
-
             return newChat;
         }
     }
     throw new Error();
+}
+
+function debug(message) {
+    if (DEBUG) {
+        console.log(message);
+    }
 }
