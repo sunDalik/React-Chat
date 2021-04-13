@@ -4,9 +4,16 @@ It's a chat for 2 users. You get a link for a new chat room whenever you open th
 
 
 ## How to run  
-- Go to *node-backend* folder and run `npm start`  
-- Go to *react-frontend* folder and run `npm start`  
+### Development
+- Go to *node-backend* folder and run `npm start` to start the Node.js server  
+- Go to *react-frontend* folder and run `npm start` to start the React development server  
 - Go to `localhost:3000` in your browser and chat with yourself! 
+- You can edit your react app in real time and it will change in browser
+
+### Production
+- Go to *react-frontend* folder and run `npm run build` to create an optimized React build  
+- Go to *node-backend* folder and run `npm start` to start the Node.js server  
+- The application will be available at `localhost:8000`. Optimized React build will be directly served from the Node.js server     
 
 ## Screenshots  
 ![screenshot1](https://i.imgur.com/SGIgN0P.png)
