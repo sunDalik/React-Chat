@@ -6,7 +6,7 @@ const MessageList = ({messages}) => {
 
     React.useEffect(() => {
         chatMessagesList.current.scrollTop = chatMessagesList.current.scrollHeight + 999;
-    }, [messages]);
+    }, [messages, chatMessagesList]);
 
     return (
         <div className="chat-messages-list" ref={chatMessagesList}>

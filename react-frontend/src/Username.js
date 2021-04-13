@@ -6,7 +6,7 @@ const Username = () => {
 
     React.useEffect(() => {
         nameInput.current.value = readLocalStorageEntry(storage.username);
-    }, []);
+    }, [nameInput]);
 
     const focusUsernameInput = () => {
         nameInput.current.focus();

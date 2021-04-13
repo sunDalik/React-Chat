@@ -1,4 +1,5 @@
 const DEBUG = true;
+const path = require("path");
 const utils = require('./utils.js');
 const express = require('express');
 const app = express();
@@ -9,6 +10,11 @@ const server = app.listen(port, () => {
 
 const io = require('socket.io')(server, {
     transports: ["websocket"]
+});
+
+app.use(express.static(path.join(__dirname, "..", "react-frontend", "build")));
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, "..", "react-frontend", "build", "index.html"));
 });
 
 const chats = [];

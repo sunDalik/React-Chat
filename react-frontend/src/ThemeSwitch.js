@@ -11,7 +11,7 @@ const ThemeSwitch = () => {
             themeIcon.current.classList.add("fa-sun");
             document.querySelector(":root").classList.add("light-theme");
         }
-    }, []);
+    }, [themeIcon]);
 
     const switchTheme = () => {
         const isLightTheme = !readLocalStorageEntry(storage.isLightTheme);

@@ -11,6 +11,7 @@ function getRandomString(len) {
     for (let i = 0; i < len; i++) {
         string += alphabet.charAt(Math.floor(Math.random() * alphabet.length));
     }
+    return string;
 }
 
 module.exports = {removeObjectFromArray, getRandomString};
